@@ -28,6 +28,7 @@ async function main() {
   // use `await mongoose.connect('mongodb://user:password@localhost:27017/test');` if your database has auth enabled
 }
 
+
 const bookSchema = new mongoose.Schema({
   title: String,
   cover: String,
@@ -54,6 +55,24 @@ app.get('/api/books', (req, res) => {
   })
 })
 
+app.get('/api/book/:id', (req, res)=>{
+  console.log(req.params.id);
+  bookModel.findById(req.params.id,(error,data)=>{
+    res.json(data);
+  })
+})
+
+app.put('/api/book/:id',(req, res)=>{
+ 
+  console.log("Update: "+req.params.id);
+  console.log(req.body);
+  
+  bookModel.findByIdAndUpdate(req.params.id,req.body,{new:true},
+    (error,data)=>{
+      res.send(data);
+    })
+})
+ 
 app.get('/api/book/:id', (req, res)=>{
   console.log(req.params.id);
   bookModel.findById(req.params.id,(error,data)=>{
